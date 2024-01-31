@@ -1,0 +1,61 @@
+<template>
+  <form @submit.prevent="fireAddPost">
+    <table border="1">
+      <tr>
+        <td>제목</td>
+        <td><input type="text" v-model="title"></td>
+      </tr>
+      <tr>
+        <td>내용</td>
+        <td><input type="text" v-model="content"></td>
+      </tr>
+      <tr>
+				<td>파일</td>
+				<td><input type="file" @change="changeFile($event)"/></td>
+			</tr>
+		</table>
+
+    <div>
+      <button type="submit">등록|</button>
+      <router-link :to="{ name: 'BoardListView' }">취소</router-link>
+    </div>
+  </form>
+</template>
+
+<script>
+import { ref } from 'vue'
+
+export default {
+  name: 'BoardRegisterForm',
+  emits: ['add-post'],
+  setup(props, context) {
+    const title = ref('')
+    const content = ref('')
+    const file = ref('')
+
+    const fireAddPost = async () => {
+      console.log('title:', title.value);
+      console.log('content:', content.value);
+      console.log('file:', file.value);
+
+      await context.emit('add-post', {
+        title: title.value,
+        content: content.value,
+        file: file.value
+      });
+    }
+
+    const changeFile = (evt) => {
+      file.value = evt.target.files[0]
+    }
+
+    return {
+      title,
+      content,
+      file,
+      fireAddPost,
+      changeFile,
+    }
+  },
+}
+</script>
