@@ -29,11 +29,8 @@ import java.util.UUID;
 public class BoardController {
     private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 
-    private final BoardService boardService;
     @Autowired
-    public BoardController(BoardService boardService) {
-        this.boardService = boardService;
-    }
+    private BoardService boardService;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -58,36 +55,40 @@ public class BoardController {
         return new ResponseEntity<>(boardList, HttpStatus.OK);
     }
 
-    @GetMapping({"/{no}"})
+    /**
+     * 게시판 상세보기
+     *
+     * @param no 게시믈 번호
+     * @return 조회된 게시믈 정보
+     * @throws Exception 조회 과정에서 발생한 예외
+     */
+    @GetMapping("/{no}")
     public ResponseEntity<Board> read(@PathVariable("no") Long no) throws Exception {
-        log.info("read");
-        Board item = this.boardService.read(no);
-        // Hibernate.initialize(item);
-        Board itemDto = mapItemToDto(item);
-        // cnt 값을 1 증가시킵니다.
-        itemDto.setCnt(itemDto.getCnt() + 1);
+        Board itemDto;
 
-        // 업데이트된 itemDto를 데이터베이스에 저장합니다.
-        this.boardService.regist(itemDto);
+        try {
+            log.info("read");
+            Board item = this.boardService.read(no);
+            itemDto = this.boardService.mapItemToDto(item);
+            itemDto.setCnt(itemDto.getCnt() + 1);
+            this.boardService.regist(itemDto);
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
         return new ResponseEntity<>(itemDto, HttpStatus.OK);
     }
 
-    private Board mapItemToDto(Board board) {
-        Board boardDto = new Board();
-        boardDto.setNo(board.getNo());
-        boardDto.setTitle(board.getTitle());
-        boardDto.setContent(board.getContent());
-        boardDto.setRegDate(board.getRegDate());
-        boardDto.setCnt(board.getCnt());
-        boardDto.setWriter(board.getWriter());
-        boardDto.setUseYn(board.getUseYn());
-        boardDto.setPicture(board.getPicture());
-        boardDto.setPictureUrl(board.getPictureUrl());
-        return boardDto;
-    }
-
+    /**
+     * 게시글 등록
+     *
+     * @param item   등록할 게시글 정보
+     * @param picture 게시글에 첨부되는 이미지 파일
+     * @throws Exception 등록 과정에서 발생한 예외
+     */
     @PostMapping
-    public ResponseEntity<Board> register(@RequestPart("item") String itemString, @RequestPart("file") MultipartFile picture) throws Exception {
+    public ResponseEntity<Board> register(@RequestPart("item") String itemString, @RequestPart(name = "file",required = false) MultipartFile picture) throws Exception {
         log.info("itemString: " + itemString);
         Board item = (Board)(new ObjectMapper()).readValue(itemString, Board.class);
         String title = item.getTitle();
@@ -103,7 +104,17 @@ public class BoardController {
             item.setContent(content);
         }
 
-        item.setPicture(picture);
+        // 파일이 선택되었을 때만 설정
+        if (picture != null) {
+            item.setPicture(picture);
+            MultipartFile file = item.getPicture();
+            log.info("originalName: " + file.getOriginalFilename());
+            log.info("size: " + file.getSize());
+            log.info("contentType: " + file.getContentType());
+            String createdFileName = this.uploadFile(file.getOriginalFilename(), file.getBytes());
+            item.setPictureUrl(createdFileName);
+        }
+
         item.setWriter("admin");
         item.setUseYn("Y");
         LocalDate currentDate = LocalDate.now();
@@ -111,12 +122,6 @@ public class BoardController {
         String formattedDate = currentDate.format(formatter);
         item.setRegDate(formattedDate);
 
-        MultipartFile file = item.getPicture();
-        log.info("originalName: " + file.getOriginalFilename());
-        log.info("size: " + file.getSize());
-        log.info("contentType: " + file.getContentType());
-        String createdFileName = this.uploadFile(file.getOriginalFilename(), file.getBytes());
-        item.setPictureUrl(createdFileName);
         this.boardService.regist(item);
         log.info("register item.getNo() = " + item.getNo());
         Board createdItem = new Board();
@@ -217,9 +222,5 @@ public class BoardController {
         modifiedItem.setNo(item.getNo());
         return new ResponseEntity(modifiedItem, HttpStatus.OK);
     }
-
-//    public ItemController(final ItemService itemService) {
-//        this.itemService = itemService;
-//    }
 }
 

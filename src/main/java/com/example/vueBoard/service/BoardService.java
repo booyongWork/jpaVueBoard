@@ -16,4 +16,5 @@ public interface BoardService {
     void remove(Long itemId) throws Exception;
 
     String getPicture(Long itemId) throws Exception;
+    Board mapItemToDto(Board board) throws Exception;
 }
