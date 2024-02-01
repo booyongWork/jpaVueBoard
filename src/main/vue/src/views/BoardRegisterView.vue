@@ -1,3 +1,9 @@
+<!--
+파일이름 : BoardRegisterView.vue
+작 성 자 : 정부용
+작 성 일 : 2024.01.29
+설 명 : 게시판 등록 페이지
+-->
 <template>
   <div align="center">
     <h2>게시물 등록</h2>

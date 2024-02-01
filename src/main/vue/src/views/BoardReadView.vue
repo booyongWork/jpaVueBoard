@@ -1,3 +1,9 @@
+<!--
+파일이름 : BoardReadView.vue
+작 성 자 : 정부용
+작 성 일 : 2024.01.29
+설 명 : 게시판 상세 페이지
+-->
 <template>
   <div align="center">
     <h2>게시물 상세보기</h2>
@@ -53,21 +59,5 @@ export default {
       deletePost
     };
   },
-
-
 };
 </script>
-<style>
-button{
-  padding: 0;
-  border: 0;
-  background-color: transparent;
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  font-size: 14.5px;
-  cursor: pointer;
-}
-button:hover {
-  background-color: hsla(160, 100%, 37%, 0.2);
-}
-</style>

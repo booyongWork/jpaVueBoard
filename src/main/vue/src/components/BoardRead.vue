@@ -1,3 +1,9 @@
+<!--
+파일이름 : BoardRead.vue
+작 성 자 : 정부용
+작 성 일 : 2024.01.29
+설 명 : 게시판 상세 페이지 컨포넌트
+-->
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <div>
     <table border="1">
@@ -25,10 +31,6 @@
           <input type="text" :value="item.fileNm" disabled style="    width: 200px;font-size: 10px; height: 30px;">
         </td>
       </tr>
-<!--			<tr>-->
-<!--				<td>상품설명</td>-->
-<!--				<td><textarea :value="item.description" disabled></textarea></td>-->
-<!--			</tr>-->
 		</table>
   </div>
 </template>

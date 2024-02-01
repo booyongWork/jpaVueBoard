@@ -12,7 +12,7 @@ public interface BoardService {
     void regist(Board board, MultipartFile picture) throws Exception;
     Board modify(Board board, MultipartFile picture) throws Exception;
     void remove(Long itemId) throws Exception;
-    String getPicture(Long itemId) throws Exception;
+//    String getPicture(Long itemId) throws Exception;
     Board mapItemToDto(Board board) throws Exception;
     ResponseEntity<byte[]> displayFile(Long no) throws Exception;
     void updateCnt(Board item) throws Exception;

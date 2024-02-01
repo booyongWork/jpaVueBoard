@@ -1,4 +1,10 @@
-<template xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<!--
+파일이름 : BoardModifyForm.vue
+작 성 자 : 정부용
+작 성 일 : 2024.01.29
+설 명 : 게시판 수정 페이지 컨포넌트
+-->
+<template>
   <form @submit.prevent="submitForm">
     <table border="1">
       <tr>

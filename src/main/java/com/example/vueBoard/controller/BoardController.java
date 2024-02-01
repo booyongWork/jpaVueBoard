@@ -35,7 +35,7 @@ public class BoardController {
         log.debug("################ BoardController.list ################");
         List<Board> boardList;
         try {
-            boardList = this.boardService.list();
+            boardList = boardService.list();
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -56,10 +56,10 @@ public class BoardController {
         log.debug("################ BoardController.read ################");
         Board itemDto;
         try {
-            Board item = this.boardService.read(no);
-            itemDto = this.boardService.mapItemToDto(item);
+            Board item = boardService.read(no);
+            itemDto = boardService.mapItemToDto(item);
             itemDto.setCnt(itemDto.getCnt() + 1);
-            this.boardService.updateCnt(itemDto);
+            boardService.updateCnt(itemDto);
     } catch (Exception e) {
         throw new Exception(e.getMessage());
     }
@@ -121,7 +121,7 @@ public class BoardController {
     public ResponseEntity<Void> remove(@PathVariable("no") Long no) throws Exception {
         log.debug("################ BoardController.remove ################");
         try {
-            this.boardService.remove(no);
+            boardService.remove(no);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
