@@ -32,9 +32,9 @@ public class BoardController {
      */
     @GetMapping
     public ResponseEntity<List<Board>> list() throws Exception {
+        log.debug("################ BoardController.list ################");
         List<Board> boardList;
         try {
-            log.info("list");
             boardList = this.boardService.list();
 
         } catch (Exception e) {
@@ -53,15 +53,13 @@ public class BoardController {
      */
     @GetMapping("/{no}")
     public ResponseEntity<Board> read(@PathVariable("no") Long no) throws Exception {
+        log.debug("################ BoardController.read ################");
         Board itemDto;
-
         try {
-            log.info("read");
             Board item = this.boardService.read(no);
             itemDto = this.boardService.mapItemToDto(item);
             itemDto.setCnt(itemDto.getCnt() + 1);
             this.boardService.updateCnt(itemDto);
-
     } catch (Exception e) {
         throw new Exception(e.getMessage());
     }
@@ -72,14 +70,15 @@ public class BoardController {
     /**
      * 게시글 등록
      *
-     * @param itemString   등록할 게시글 정보
+     * @param boardInfo   등록할 게시믈 정보
      * @param picture 게시글에 첨부되는 이미지 파일
      * @throws Exception 등록 과정에서 발생한 예외
      */
     @PostMapping
-    public ResponseEntity<Board> register(@RequestPart("item") String itemString, @RequestPart(name = "file", required = false) MultipartFile picture) throws Exception {
-        log.info("itemString: " + itemString);
-        Board item = (Board)(new ObjectMapper()).readValue(itemString, Board.class);
+    public ResponseEntity<Board> register(@RequestPart("item") String boardInfo, @RequestPart(name = "file", required = false) MultipartFile picture) throws Exception {
+        log.debug("################ BoardController.register ################");
+        log.info("boardInfo: " + boardInfo);
+        Board item = (Board)(new ObjectMapper()).readValue(boardInfo, Board.class);
         Board registItem = new Board();
         try {
             boardService.regist(item, picture);
@@ -93,9 +92,15 @@ public class BoardController {
     }
 
 
-
+    /**
+     * 첨부파일 미리보기
+     *
+     * @param no 게시믈 번호
+     * @return ResponseEntity<byte[]> 응답 엔터티. 성공 시 파일 데이터를 포함한 응답, 실패 시 INTERNAL_SERVER_ERROR 상태 반환
+     */
     @GetMapping("/display")
     public ResponseEntity<byte[]> displayFile(@RequestParam Long no) {
+        log.debug("################ BoardController.displayFile ################");
         try {
             ResponseEntity<byte[]> responseEntity = boardService.displayFile(no);
             return responseEntity;
@@ -105,17 +110,37 @@ public class BoardController {
         }
     }
 
+    /**
+     * 게시물 삭제
+     *
+     * @param no 게시믈 번호
+     * @return ResponseEntity<Void> 성공 시 NO_CONTENT 상태 반환
+     * @throws Exception 삭제 도중 예외가 발생할 경우 발생한 예외 메시지를 담아서 전달
+     */
     @DeleteMapping({"/{no}"})
     public ResponseEntity<Void> remove(@PathVariable("no") Long no) throws Exception {
-        log.info("remove");
-        this.boardService.remove(no);
+        log.debug("################ BoardController.remove ################");
+        try {
+            this.boardService.remove(no);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * 게시물 수정
+     *
+     * @param boardInfo 수정할 게시물 정보
+     * @param picture     수정할 첨부 파일
+     * @return ResponseEntity<Board> 성공 시 수정된 게시물 정보와 OK 상태 반환
+     * @throws Exception 수정 도중 예외가 발생할 경우 발생한 예외 메시지를 담아서 전달
+     */
     @PutMapping
-    public ResponseEntity<Board> modify(@RequestPart("item") String itemString, @RequestPart(name = "file",required = false) MultipartFile picture) throws Exception {
-        log.info("itemString: " + itemString);
-        Board item = (Board)(new ObjectMapper()).readValue(itemString, Board.class);
+    public ResponseEntity<Board> modify(@RequestPart("item") String boardInfo, @RequestPart(name = "file",required = false) MultipartFile picture) throws Exception {
+        log.debug("################ BoardController.modify ################");
+        log.info("boardInfo: " + boardInfo);
+        Board item = (Board)(new ObjectMapper()).readValue(boardInfo, Board.class);
         Board modifiedItem = new Board();
 
         try {

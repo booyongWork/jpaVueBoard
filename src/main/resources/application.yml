@@ -14,7 +14,10 @@ spring:
     properties:
       hibernate:
         format_sql: true # SQL문 정렬하여 출력
-
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
 upload:
   path: 'C:/fileUpload'
 

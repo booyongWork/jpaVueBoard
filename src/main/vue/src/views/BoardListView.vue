@@ -2,7 +2,7 @@
   <div align="center">
     <h2>게시물 목록</h2>
     <a href="/register">|등록|</a>
-    <board-list :items="items"/> <!-- 여기서 BoardList 컴포넌트를 사용하도록 변경 -->
+    <board-list :items="items"/>
   </div>
 </template>
 

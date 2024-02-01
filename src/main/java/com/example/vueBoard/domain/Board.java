@@ -22,5 +22,6 @@ public class Board {
     private String regDate;
     @Transient
     private MultipartFile picture;
-    private String pictureUrl;
+    private String fileUrl;
+    private String fileNm;
 }

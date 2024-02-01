@@ -13,10 +13,18 @@
 				<td>내용</td>
 				<td><input type="text" :value="item.content" disabled></td>
 			</tr>
-      <tr v-if="item.pictureUrl">
+      <tr v-if="item.fileUrl">
 				<td>파일 미리보기</td>
-				<td><img v-bind:src="pictureUrl()" width="200" disabled></td>
+				<td>
+          <img v-bind:src="fileUrl()" width="200" disabled>
+         </td>
 			</tr>
+      <tr v-if="item.fileNm">
+        <td>파일 이름</td>
+        <td>
+          <input type="text" :value="item.fileNm" disabled style="    width: 200px;font-size: 10px; height: 30px;">
+        </td>
+      </tr>
 <!--			<tr>-->
 <!--				<td>상품설명</td>-->
 <!--				<td><textarea :value="item.description" disabled></textarea></td>-->
@@ -35,14 +43,16 @@ export default {
     }
   },
   setup(props) {
-    const pictureUrl = () => {
-      if (props.item.pictureUrl) {
-        return `http://localhost:8090/board/display?no=${props.item.no}&timestamp=${new Date().getTime()}`;
+    const fileUrl = () => {
+      if(props.item.fileUrl) {
+        const url = `http://localhost:8090/board/display?no=${props.item.no}&timestamp=${new Date().getTime()}`;
+        console.log('File URL:', url);
+        return url;
       }
     }
 
     return {
-      pictureUrl,
+      fileUrl,
     }
   },
 }

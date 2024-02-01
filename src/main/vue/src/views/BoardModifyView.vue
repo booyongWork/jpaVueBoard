@@ -41,12 +41,13 @@ export default {
         });
 
     const modifyPost = (payload) => {
-      const { title, content, file } = payload
+      const { title, content, file ,fileNm } = payload
 
       const itemObject = {
         no: props.no,
         title: title,
         content: content,
+        fileNm: fileNm,
       }
 
       const formData = new FormData()

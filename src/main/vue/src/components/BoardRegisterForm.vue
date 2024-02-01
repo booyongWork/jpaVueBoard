@@ -34,6 +34,18 @@ export default {
     const file = ref('')
 
     const fireAddPost = async () => {
+      if (!title.value) {
+        alert('제목은 필수 입력 항목입니다.');
+        return;
+      }
+      if (!content.value) {
+        alert('내용은 필수 입력 항목입니다.');
+        return;
+      }
+      if (file.value && file.value.size > 5 * 1024 * 1024) {
+        alert('파일 크기는 5MB 이하로 업로드해주세요.');
+        return;
+      }
       console.log('title:', title.value);
       console.log('content:', content.value);
       console.log('file:', file.value);

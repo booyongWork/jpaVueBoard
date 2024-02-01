@@ -11,8 +11,8 @@
       </tr>
 
       <tr v-if="!items || (Array.isArray(items) && items.length === 0)">
-        <td colspan="3">
-          List is empty.
+        <td align="center" colspan="6">
+          등록된 파일이 없습니다.
         </td>
       </tr>
 
@@ -24,9 +24,9 @@
         <td align="center">{{ item.regDate }}</td>
         <td align="center">{{ item.writer }}</td>
         <td align="center">{{ item.cnt }}</td>
-        <td align="center" :style="{ cursor: item.pictureUrl ? 'pointer' : 'default' }"
+        <td align="center" :style="{ cursor: item.fileUrl ? 'pointer' : 'default' }"
             @click="showAlert(item)">
-          {{ item.pictureUrl ? 'O' : '-' }}
+          {{ item.fileUrl ? 'O' : '-' }}
         </td>
       </tr>
     </table>
@@ -50,7 +50,7 @@ export default {
     },
     showAlert(item) {
       // 'O'를 클릭할 때 얼럿을 띄우는 로직 추가
-      if (item.pictureUrl) {
+      if (item.fileUrl) {
         alert('첨부파일 다운로드 구현 예정입니다.');
       }
     }
