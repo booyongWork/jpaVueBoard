@@ -16,6 +16,7 @@
         <th align="center" width="100">첨부파일</th>
       </tr>
 
+      <!-- 리스트 예외처리 -->
       <tr v-if="!items || (Array.isArray(items) && items.length === 0)">
         <td align="center" colspan="6">
           등록된 파일이 없습니다.
@@ -41,23 +42,23 @@
 
 <script>
 export default {
-  name: 'BoardList',
+  name: 'BoardList', // 컴포넌트의 이름을 지정
+
   props: {
-    items: {
-      type: Array
+    items: { // items라는 prop을 정의
+      type: Array // prop의 타입을 배열로 지정
     }
   },
+
   methods: {
-    // 사용자 정의 메서드로 라우터를 변경하는 함수
-    goToItemReadView(no) {
-      // 라우터를 변경하고 ItemReadView로 이동
-      // console.log(`Navigating to ItemReadView with itemId: ${itemId}`);
+    goToItemReadView(no) { // goToItemReadView 메서드 정의
+      // 라우터를 통해 BoardReadView 페이지로 이동하는 메서드
       this.$router.push({ name: 'BoardReadView', params: { no: no } });
     },
-    showAlert(item) {
-      // 'O'를 클릭할 때 얼럿을 띄우는 로직 추가
-      if (item.fileUrl) {
-        alert('첨부파일 다운로드 구현 예정입니다.');
+
+    showAlert(item) { // showAlert 메서드 정의
+      if (item.fileUrl) { // item 객체에 fileUrl 속성이 있는 경우
+        alert('첨부파일 다운로드 구현 예정입니다.'); // 얼럿으로 메시지 표시
       }
     }
   }

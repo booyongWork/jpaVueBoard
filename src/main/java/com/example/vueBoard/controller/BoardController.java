@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(
-        origins = {"http://localhost:8090", "http://localhost:3000"}
+        origins = {"http://localhost:8090", "http://localhost:3000"}//브라우저는 보안상의 이유로 기본적으로 다른 출처(Origin)로부터의 리소스에 대한 요청을 차단
 )
 @RequestMapping({"/board"})
 public class BoardController {

@@ -28,7 +28,7 @@
       <tr v-if="item.fileNm">
         <td>파일 이름</td>
         <td>
-          <input type="text" :value="item.fileNm" disabled style="    width: 200px;font-size: 10px; height: 30px;">
+          <input type="text" :value="item.fileNm" disabled style="width: 200px;font-size: 10px; height: 30px;">
         </td>
       </tr>
 		</table>
@@ -37,24 +37,27 @@
 
 <script>
 export default {
-  name: 'BoardRead',
-  props: {
-    item: {
-      type: Object,
-      required: true
+  name: 'BoardRead', // 컴포넌트의 이름을 지정
+
+  props: { // 컴포넌트에 전달되는 props를 정의
+    item: { // item이라는 prop을 정의
+      type: Object, // prop의 타입을 객체
+      required: true // prop이 필수
     }
   },
+
   setup(props) {
-    const fileUrl = () => {
-      if(props.item.fileUrl) {
-        const url = `http://localhost:8090/board/display?no=${props.item.no}&timestamp=${new Date().getTime()}`;
+    console.log(props)
+    const fileUrl = () => { // fileUrl이라는 함수를 선언
+      if(props.item.fileUrl) { // 전달된 item 객체의 fileUrl 속성이 존재하는지 확인
+        const url = `http://localhost:8090/board/display?no=${props.item.no}&timestamp=${new Date().getTime()}`; // 동적인 파일 URL을 생성
         console.log('File URL:', url);
-        return url;
+        return url; // 파일 URL을 반환
       }
     }
 
-    return {
-      fileUrl,
+    return { // setup 함수의 반환 객체를 정의
+      fileUrl, // fileUrl 함수를 반환
     }
   },
 }
